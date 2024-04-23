@@ -6,7 +6,9 @@ MicroBit uBit;
 
 extern "C"
 {
-
+    void onButtonA(char message[]);
+    // 
+    
     void microbit_init()
     {
         uBit.init();
@@ -17,23 +19,21 @@ extern "C"
         uBit.panic(statusCode);
     }
 
-    void display(char message[])
+    void seeText(char message[])
     {
         uBit.display.scroll(message, 100);
     }
 
-//     void onButton(MicroBitEvent e)
-//     {
-//         uBit.display.printf("A");
-//     }
-// }
+    void buttonPress(MicroBitEvent event, char message[])
+    {
+        uBit.messageBus.listen(MICROBIT_ID_BUTTON_A, MICROBIT_BUTTON_EVT_CLICK, onButtonA);
+        seeText(message);
+    }
 
-// int main()
-// {
-//     uBit.init();
-//     uBit.messageBus.listen(MICROBIT_ID_BUTTON_A, MICROBIT_BUTTON_EVT_CLICK, onButton);
-//     while (1)
-//         uBit.sleep(100);
-};
+    void onButtonA(char message[])
+    {
+        buttonPress(MicroBitEvent(), message);
+    }
+}
 
 #endif
